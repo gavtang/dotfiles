@@ -11,3 +11,4 @@ export NVM_DIR="$HOME/.nvm"
 
 eval "$(zoxide init zsh)"
 export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
+eval "$(starship init zsh)"
