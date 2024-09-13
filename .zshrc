@@ -12,3 +12,12 @@ export NVM_DIR="$HOME/.nvm"
 eval "$(zoxide init zsh)"
 export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 eval "$(starship init zsh)"
+
+# bun completions
+[ -s "/Users/gavin/.bun/_bun" ] && source "/Users/gavin/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="/opt/homebrew/opt/llvm@14/bin:$PATH"
+export PATH="/Users/gavin/Code/Tools/Odin:$PATH"
