@@ -1,4 +1,4 @@
-alias vim="nvim"
+alias vim="hx"
 export GOPATH=/Users/gavin/go
 export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/bin
 
@@ -16,8 +16,16 @@ eval "$(starship init zsh)"
 # bun completions
 [ -s "/Users/gavin/.bun/_bun" ] && source "/Users/gavin/.bun/_bun"
 
+. "$HOME/.asdf/asdf.sh"
+
+# append completions to fpath
+fpath=(${ASDF_DIR}/completions $fpath)
+# initialise completions with ZSH's compinit
+autoload -Uz compinit && compinit
+
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="/opt/homebrew/opt/llvm@14/bin:$PATH"
 export PATH="/Users/gavin/Code/Tools/Odin:$PATH"
+export PATH="/Users/gavin/Code/Tools/ols:$PATH"

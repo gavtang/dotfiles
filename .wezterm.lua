@@ -11,5 +11,15 @@ config.color_scheme = "Tokyo Night"
 
 config.hide_tab_bar_if_only_one_tab = true
 
+config.window_background_opacity = 0.8
+
+config.keys = {
+  {
+    key = 'n',
+    mods = 'SHIFT|CTRL',
+    action = wezterm.action.ToggleFullScreen,
+  },
+}
+
 -- and finally, return the configuration to wezterm
 return config
