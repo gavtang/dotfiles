@@ -1,38 +1,60 @@
-(require 'package)
+;; Example Elpaca configuration -*- lexical-binding: t; -*-
+(defvar elpaca-installer-version 0.9)
+(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+                              :ref nil :depth 1 :inherit ignore
+                              :files (:defaults "elpaca-test.el" (:exclude "extensions"))
+                              :build (:not elpaca--activate-package)))
+(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+       (build (expand-file-name "elpaca/" elpaca-builds-directory))
+       (order (cdr elpaca-order))
+       (default-directory repo))
+  (add-to-list 'load-path (if (file-exists-p build) build repo))
+  (unless (file-exists-p repo)
+    (make-directory repo t)
+    (when (< emacs-major-version 28) (require 'subr-x))
+    (condition-case-unless-debug err
+        (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+                  ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+                                                  ,@(when-let* ((depth (plist-get order :depth)))
+                                                      (list (format "--depth=%d" depth) "--no-single-branch"))
+                                                  ,(plist-get order :repo) ,repo))))
+                  ((zerop (call-process "git" nil buffer t "checkout"
+                                        (or (plist-get order :ref) "--"))))
+                  (emacs (concat invocation-directory invocation-name))
+                  ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                        "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+                  ((require 'elpaca))
+                  ((elpaca-generate-autoloads "elpaca" repo)))
+            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+          (error "%s" (with-current-buffer buffer (buffer-string))))
+      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+  (unless (require 'elpaca-autoloads nil t)
+    (require 'elpaca)
+    (elpaca-generate-autoloads "elpaca" repo)
+    (load "./elpaca-autoloads")))
+(add-hook 'after-init-hook #'elpaca-process-queues)
+(elpaca `(,@elpaca-order))
 
-;; Nice macro for updating lists in place.
-(defmacro append-to-list (target suffix)
-  "Append SUFFIX to TARGET in place."
-  `(setq ,target (append ,target ,suffix)))
+;; Uncomment for systems which cannot create symlinks:
+; (elpaca-no-symlink-mode)
 
-;; Set up emacs package archives with 'package
-(append-to-list package-archives
-                '(("melpa" . "http://melpa.org/packages/") ;; Main package archive
-                  ("melpa-stable" . "http://stable.melpa.org/packages/") ;; Some packages might only do stable releases?
-                  ("org-elpa" . "https://orgmode.org/elpa/"))) ;; Org packages, I don't use org but seems like a harmless default
+;; Install a package via the elpaca macro
+;; See the "recipes" section of the manual for more details.
 
-(package-initialize)
+;; (elpaca example-package)
 
-;; Ensure use-package is present. From here on out, all packages are loaded
-;; with use-package, a macro for importing and installing packages. Also, refresh the package archive on load so we can pull the latest packages.
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+;; Install use-package support
+(elpaca elpaca-use-package
+  ;; Enable use-package :ensure support for Elpaca.
+  (elpaca-use-package-mode))
 
-(require 'use-package)
-(setq
- use-package-always-ensure t ;; Makes sure to download new packages if they aren't already downloaded
- use-package-verbose t) ;; Package install logging. Packages break, it's nice to know why.
 
-;; Slurp environment variables from the shell.
-;; a.k.a. The Most Asked Question On r/emacs
-(use-package exec-path-from-shell
-  :config
-  (exec-path-from-shell-initialize))
-
+;; Basic configs
 (setq inhibit-startup-message t)
 
-(use-package meow)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
@@ -40,6 +62,9 @@
 
 (load-theme 'modus-vivendi t)
 
+
+;; meow
+(use-package meow :ensure (:wait t) :demand t)
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-motion-overwrite-define-key
