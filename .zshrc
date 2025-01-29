@@ -23,9 +23,12 @@ fpath=(${ASDF_DIR}/completions $fpath)
 # initialise completions with ZSH's compinit
 autoload -Uz compinit && compinit
 
+export EMSDK_QUIET=1
+source "/Users/gavin/Code/Tools/emsdk/emsdk_env.sh"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-export PATH="/opt/homebrew/opt/llvm@14/bin:$PATH"
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 export PATH="/Users/gavin/Code/Tools/Odin:$PATH"
 export PATH="/Users/gavin/Code/Tools/ols:$PATH"
+export PATH="/Users/gavin/.cache/rebar3/bin:$PATH"

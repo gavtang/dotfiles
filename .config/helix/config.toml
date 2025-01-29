@@ -12,7 +12,7 @@ select = "underline"
 auto-signature-help = false
 
 [editor.file-picker]
-hidden = true
+hidden = false
 
 [keys.normal]
 C-m=":run-shell-command odin run ."

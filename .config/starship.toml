@@ -3,3 +3,10 @@ disabled = true
 
 [elixir]
 symbol = '🔮 '
+disabled = true
+
+[custom.asdf_elixir]
+command = """asdf current elixir | awk '{print $2}' | awk -F'-' '{print "v"$1" (OTP "$3")"}'"""
+detect_files = ["mix.exs"]
+format = "💧 [$output]($style)"
+style = "bold purple"
