@@ -1,3 +1,17 @@
 theme = tokyonight
 background-opacity = 0.9
 
+macos-titlebar-style = transparent
+# window-decoration = none
+
+fullscreen = true
+maximize = true
+initial-command = zellij
+
+keybind = super+t=unbind
+keybind = super+g=unbind
+keybind = super+p=unbind
+keybind = super+n=unbind
+keybind = super+h=unbind
+keybind = super+s=unbind
+keybind = super+q=unbind

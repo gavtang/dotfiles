@@ -1,4 +1,5 @@
 alias vim="hx"
+export EDITOR="/opt/homebrew/bin/hx"
 export GOPATH=/Users/gavin/go
 export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/bin
 
@@ -32,3 +33,4 @@ export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 export PATH="/Users/gavin/Code/Tools/Odin:$PATH"
 export PATH="/Users/gavin/Code/Tools/ols:$PATH"
 export PATH="/Users/gavin/.cache/rebar3/bin:$PATH"
+eval "$(zellij setup --generate-auto-start zsh)"

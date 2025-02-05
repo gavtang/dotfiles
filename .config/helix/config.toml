@@ -2,11 +2,21 @@ theme = "tokyotransparent"
 
 [editor]
 line-number = "relative"
+# Minimum severity to show a diagnostic after the end of a line:
+end-of-line-diagnostics = "hint"
+
+[editor.inline-diagnostics]
+# Minimum severity to show a diagnostic on the primary cursor's line.
+# Note that `cursor-line` diagnostics are hidden in insert mode.
+cursor-line = "error"
+# Minimum severity to show a diagnostic on other lines:
+# other-lines = "error"
 
 [editor.cursor-shape]
 insert = "bar"
 normal = "block"
 select = "underline"
+
 
 [editor.lsp]
 auto-signature-help = false
@@ -19,3 +29,5 @@ C-m=":run-shell-command odin run ."
 
 [keys.insert]
 C-p = "signature_help"
+"C-9" = ["goto_line_end", ":append-output printf 'do\nend\n'","exit_select_mode", "move_line_up", ":fmt", "goto_line_end", "normal_mode" ] 
+
